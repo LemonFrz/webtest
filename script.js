@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let particles = [];
 
     // Configuration
-    const particleCount = window.innerWidth < 768 ? 60 : 300; // Count from user's last edit
+    const particleCount = window.innerWidth < 768 ? 60 : 300;
     const mouseParams = { x: null, y: null, radius: 150 };
 
     // Resize handling
@@ -85,12 +85,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     const forceDirectionX = dx / distance;
                     const forceDirectionY = dy / distance;
                     const force = (mouseParams.radius - distance) / mouseParams.radius;
-                    // Original magnetism: repulsion/swirl. 
-                    // To restore original feel:
+
                     const directionX = forceDirectionX * force * 2;
                     const directionY = forceDirectionY * force * 2;
 
-                    this.x += directionX; // += pushes away/around
+                    this.x += directionX;
                     this.y += directionY;
                 }
             }
@@ -132,7 +131,61 @@ document.addEventListener('DOMContentLoaded', () => {
     initParticles();
     animate();
 
-    // Smooth scroll fix
+    // --------------------------------------------------------
+    // PROJECT MODAL LOGIC
+    // --------------------------------------------------------
+    const modal = document.getElementById('project-modal');
+    const modalClose = document.querySelectorAll('.modal-close');
+    const projectCards = document.querySelectorAll('.project-card');
+
+    // Elements to populate
+    const modalTitle = document.getElementById('modal-title');
+    const modalDesc = document.getElementById('modal-desc');
+    const modalTags = document.getElementById('modal-tags');
+
+    // Open Modal
+    projectCards.forEach(card => {
+        card.addEventListener('click', () => {
+            // Get Content
+            const title = card.querySelector('.project-title').innerText;
+            const desc = card.querySelector('.project-desc').innerText;
+            const tags = card.querySelector('.tags').innerHTML;
+
+            // Set Content
+            modalTitle.innerText = title;
+            modalDesc.innerText = desc + " (Full case study content would go here. You can add more text, images, or even embed a video in this modal!)";
+            modalTags.innerHTML = tags;
+
+            // Show Modal
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Lock Body Scroll
+        });
+    });
+
+    // Close Modal Function
+    function closeModal() {
+        modal.classList.remove('active');
+        document.body.style.overflow = ''; // Unlock Body Scroll
+    }
+
+    // Close Listeners
+    modalClose.forEach(btn => btn.addEventListener('click', closeModal));
+
+    // Click outside to close
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
+
+    // Escape key to close
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closeModal();
+        }
+    });
+
+    // Smooth scroll fix (Navigation)
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();

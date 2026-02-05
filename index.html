@@ -33,7 +33,7 @@
     <main>
         <section id="home" class="hero">
             <div class="container hero-content">
-                <h1>What The Fuck<br>Am I Creating.</h1>
+                <h1>What...<br>Am I Creating.</h1>
                 <p class="lead">I'm a designer & developer focused on building brands, websites, and apps with clean
                     aesthetics and purpose. (made fully by a clanker btw)</p>
                 <a href="#work" class="cta-button">
@@ -151,6 +151,28 @@
             <p>&copy; <span id="year"></span> Portfolio. All rights reserved.</p>
         </div>
     </footer>
+
+    <!-- Project Detail Modal -->
+    <div id="project-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" aria-label="Close modal">&times;</button>
+            <div class="modal-body">
+                <div class="modal-visual-placeholder">
+                    <span>Project Preview / Video Area</span>
+                </div>
+                <h3 id="modal-title">Project Title</h3>
+                <div class="tags" id="modal-tags">
+                    <!-- Tags will be injected here -->
+                </div>
+                <p id="modal-desc" class="modal-description">Description goes here...</p>
+                <div class="modal-footer">
+                    <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 2rem;">
+                        This is where you can add more details, a case study, or a "View Live" button.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
