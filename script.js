@@ -44,133 +44,132 @@ document.addEventListener('DOMContentLoaded', () => {
     typeEffect();
 
     // --------------------------------------------------------
-    // SCROLL REVEAL ANIMATION
+    // GSAP SCROLL ANIMATIONS
     // --------------------------------------------------------
-    const revealElements = document.querySelectorAll('.reveal');
-    const revealObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('active');
-            }
+    if (false && typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Fade-up animation for all reveal elements
+        gsap.utils.toArray('.reveal').forEach((element) => {
+            gsap.from(element, {
+                scrollTrigger: {
+                    trigger: element,
+                    start: "top 85%",
+                    toggleActions: "play none none none"
+                },
+                y: 50,
+                duration: 1,
+                ease: "power3.out"
+            });
         });
-    }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
 
-    revealElements.forEach(element => revealObserver.observe(element));
+        // Stagger animation for project cards
+        gsap.from('.project-card', {
+            scrollTrigger: {
+                trigger: '.project-grid',
+                start: "top 80%"
+            },
+            y: 60,
+            stagger: 0.2,
+            duration: 0.8,
+            ease: "power2.out"
+        });
+
+        // Hero text animation
+        gsap.from('.hero h1', {
+            y: 30,
+            duration: 1,
+            delay: 0.3,
+            ease: "power3.out"
+        });
+
+        gsap.from('.hero .lead', {
+            y: 20,
+            duration: 0.8,
+            delay: 0.6,
+            ease: "power2.out"
+        });
+    }
 
     // --------------------------------------------------------
-    // PARTICLE SYSTEM (Reverted to Floating Chaos)
+    // BACKGROUND - DISABLED (Clean dark background)
     // --------------------------------------------------------
+    // No background animation - just clean dark aesthetic
+    /*
     const canvas = document.getElementById('bg-canvas');
-    const ctx = canvas.getContext('2d');
-    let width, height;
-    let particles = [];
-
-    // Configuration
-    const particleCount = window.innerWidth < 768 ? 60 : 300;
-    const mouseParams = { x: null, y: null, radius: 150 };
-
-    // Resize handling
-    function resize() {
-        width = window.innerWidth;
-        height = window.innerHeight;
-        canvas.width = width;
-        canvas.height = height;
-    }
-    window.addEventListener('resize', () => {
-        resize();
-        initParticles(); // Re-init to avoid stretching
-    });
-    resize();
-
-    // Mouse/Touch Interaction
-    window.addEventListener('mousemove', (e) => {
-        mouseParams.x = e.x;
-        mouseParams.y = e.y;
-    });
-
-    // Touch support
-    window.addEventListener('touchmove', (e) => {
-        if (e.touches.length > 0) {
-            mouseParams.x = e.touches[0].clientX;
-            mouseParams.y = e.touches[0].clientY;
-        }
-    });
-
-    window.addEventListener('mouseout', () => {
-        mouseParams.x = null;
-        mouseParams.y = null;
-    });
-
-    // Particle Class
-    class Particle {
-        constructor() {
-            this.x = Math.random() * width;
-            this.y = Math.random() * height;
-            this.vx = (Math.random() - 0.5) * 0.5; // Slow velocity
-            this.vy = (Math.random() - 0.5) * 0.5;
-            this.size = Math.random() * 2 + 1; // Size 1-3px
-        }
-
-        update() {
-            // Move
-            this.x += this.vx;
-            this.y += this.vy;
-
-            // Mouse Repulsion/Attraction (Magnetism)
-            if (mouseParams.x != null) {
-                let dx = mouseParams.x - this.x;
-                let dy = mouseParams.y - this.y;
-                let distance = Math.sqrt(dx * dx + dy * dy);
-
-                if (distance < mouseParams.radius) {
-                    const forceDirectionX = dx / distance;
-                    const forceDirectionY = dy / distance;
-                    const force = (mouseParams.radius - distance) / mouseParams.radius;
-
-                    const directionX = forceDirectionX * force * 2;
-                    const directionY = forceDirectionY * force * 2;
-
-                    this.x += directionX;
-                    this.y += directionY;
-                }
-            }
-
-            // Boundary wrap
-            if (this.x > width) this.x = 0;
-            if (this.x < 0) this.x = width;
-            if (this.y > height) this.y = 0;
-            if (this.y < 0) this.y = height;
-        }
-
-        draw() {
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-
-            // Fixed Dark Mode Color
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
-
-            ctx.fill();
-        }
-    }
-
-    function initParticles() {
-        particles = [];
-        for (let i = 0; i < particleCount; i++) {
-            particles.push(new Particle());
-        }
-    }
-
-    function animate() {
-        ctx.clearRect(0, 0, width, height);
-        particles.forEach(p => {
-            p.update();
-            p.draw();
+    if (typeof VANTA !== 'undefined' && canvas) {
+        VANTA.GLOBE({
+            el: "#bg-canvas",
+            mouseControls: true,
+            touchControls: true,
+            gyroControls: false,
+            minHeight: 200.00,
+            minWidth: 200.00,
+            scale: 1.00,
+            scaleMobile: 1.00,
+            color: 0xff006e,
+            color2: 0xff006e,
+            backgroundColor: 0x0c0c0c,
+            size: 1.5,
+            backgroundAlpha: 1.0
         });
-        requestAnimationFrame(animate);
     }
+    */
 
-    initParticles();
-    animate();
+    // --------------------------------------------------------
+    // CUSTOM CURSOR
+    // --------------------------------------------------------
+    const cursorDot = document.querySelector('.cursor-dot');
+    const cursorRing = document.querySelector('.cursor-ring');
+
+
+    // Mouse move tracking - instant, centered on cursor
+    document.addEventListener('mousemove', (e) => {
+        if (cursorDot) {
+            // Center dot (8px width) by offsetting -4px
+            cursorDot.style.transform = `translate(${e.clientX - 4}px, ${e.clientY - 4}px)`;
+        }
+        if (cursorRing) {
+            // Center ring (40px width) by offsetting -20px
+            cursorRing.style.transform = `translate(${e.clientX - 20}px, ${e.clientY - 20}px)`;
+        }
+    });
+
+
+
+    // Expand ring on hover over interactive elements
+    const interactiveElements = document.querySelectorAll('a, button, .project-card');
+    interactiveElements.forEach(el => {
+        el.addEventListener('mouseenter', () => {
+            if (cursorRing) cursorRing.classList.add('expand');
+        });
+        el.addEventListener('mouseleave', () => {
+            if (cursorRing) cursorRing.classList.remove('expand');
+        });
+    });
+
+    // Hide cursor when leaving window
+    document.addEventListener('mouseleave', () => {
+        if (cursorDot) cursorDot.style.opacity = '0';
+        if (cursorRing) cursorRing.style.opacity = '0';
+    });
+    document.addEventListener('mouseenter', () => {
+        if (cursorDot) cursorDot.style.opacity = '1';
+        if (cursorRing) cursorRing.style.opacity = '0.5';
+    });
+
+    //--------------------------------------------------------
+    // PROJECT CARDS - 3D TILT
+    //--------------------------------------------------------
+    if (typeof VanillaTilt !== 'undefined') {
+        VanillaTilt.init(document.querySelectorAll(".project-card"), {
+            max: 15,
+            speed: 400,
+            glare: true,
+            "max-glare": 0.3,
+            scale: 1.05
+        });
+    }
 
     // --------------------------------------------------------
     // PROJECT MODAL LOGIC
