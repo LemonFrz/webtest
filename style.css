@@ -305,11 +305,27 @@ nav {
 .social-links {
     margin-top: var(--spacing-md);
     display: flex;
-    gap: var(--spacing-md);
+    gap: 2rem;
+    align-items: center;
 }
 
 .social-links a {
-    font-size: 1.2rem;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    transition: var(--transition-fast);
+}
+
+.social-links a:hover {
+    color: var(--text-primary);
+    transform: scale(1.15);
+    /* Slight pop/magnet feel */
+}
+
+.social-links svg {
+    width: 28px;
+    /* Slightly larger for easier clicking */
+    height: 28px;
 }
 
 /* Footer */
