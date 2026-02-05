@@ -64,6 +64,7 @@ body {
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
     position: relative;
+    /* overflow: hidden; Removed: JS handles this for preloader now */
 }
 
 /* Background Canvas */
@@ -147,7 +148,6 @@ nav {
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border-bottom: 1px solid rgba(125, 125, 125, 0.1);
-    /* Subtle border for both themes */
     transition: border-bottom-color 0.8s ease;
 }
 
@@ -431,6 +431,46 @@ footer {
     opacity: 1;
     transform: translateY(0);
 }
+
+/* Preloader styles removed */
+
+/* --------------------------------------------------------
+   HEADER GLOBE (HERO)
+-------------------------------------------------------- */
+#header-globe {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 12px;
+    line-height: 12px;
+    color: var(--text-secondary);
+    white-space: pre;
+    margin-bottom: 2rem;
+    display: inline-block;
+    /* Center the pre block itself */
+    text-align: center;
+}
+
+/* --------------------------------------------------------
+   TYPEWRITER CURSOR
+-------------------------------------------------------- */
+#header-typewriter::after {
+    content: '|';
+    animation: blink 1s step-end infinite;
+    margin-left: 2px;
+    color: var(--accent-color);
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+}
+
 
 /* Mobile */
 @media (max-width: 768px) {

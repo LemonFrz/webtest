@@ -3,6 +3,47 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('year').textContent = new Date().getFullYear();
 
     // --------------------------------------------------------
+    // TYPEWRITER ANIMATION (>//<!)
+    // --------------------------------------------------------
+    const typewriterElement = document.getElementById('header-typewriter');
+    const textToType = " Hola Mi Amor. . . >//<!";
+    let isDeleting = false;
+    let charIndex = 0;
+
+    function typeEffect() {
+        if (!typewriterElement) return;
+
+        const currentText = textToType.substring(0, charIndex);
+        typewriterElement.textContent = currentText;
+
+        let typeSpeed = 200; // Normal typing speed
+
+        if (isDeleting) {
+            typeSpeed = 100; // Deleting speed
+            charIndex--;
+        } else {
+            charIndex++;
+        }
+
+        // State transitions
+        if (!isDeleting && charIndex === textToType.length + 1) {
+            // Finished typing, pause before delete
+            isDeleting = true;
+            typeSpeed = 2000; // Pause at end
+            charIndex--; // Fix index overshoot
+        } else if (isDeleting && charIndex === 0) {
+            // Finished deleting, pause before re-type
+            isDeleting = false;
+            typeSpeed = 500;
+        }
+
+        setTimeout(typeEffect, typeSpeed);
+    }
+
+    // Start Typewriter
+    typeEffect();
+
+    // --------------------------------------------------------
     // SCROLL REVEAL ANIMATION
     // --------------------------------------------------------
     const revealElements = document.querySelectorAll('.reveal');
@@ -150,11 +191,24 @@ document.addEventListener('DOMContentLoaded', () => {
             const title = card.querySelector('.project-title').innerText;
             const desc = card.querySelector('.project-desc').innerText;
             const tags = card.querySelector('.tags').innerHTML;
+            const imgPath = card.getAttribute('data-image'); // Get Image Path
 
             // Set Content
             modalTitle.innerText = title;
             modalDesc.innerText = desc + " (Full case study content would go here. You can add more text, images, or even embed a video in this modal!)";
             modalTags.innerHTML = tags;
+
+            // Set Image
+            const visualPlaceholder = document.querySelector('.modal-visual-placeholder');
+            if (imgPath) {
+                // Use the cat image
+                visualPlaceholder.innerHTML = `<img src="${imgPath}" alt="${title}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px; display: block;">`;
+                visualPlaceholder.style.border = 'none'; // Remove dashed border
+            } else {
+                // Default placeholder
+                visualPlaceholder.innerHTML = `<span>Project Preview / Video Area</span>`;
+                visualPlaceholder.style.border = '1px dashed rgba(255,255,255,0.1)';
+            }
 
             // Show Modal
             modal.classList.add('active');
