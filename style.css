@@ -215,6 +215,20 @@ nav {
     font-weight: 700;
     font-size: 1.2rem;
     letter-spacing: -0.02em;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.lemon-icon {
+    color: #FFD700;
+    /* Lemon yellow/gold */
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+}
+
+.logo:hover .lemon-icon {
+    transform: rotate(-10deg) scale(1.1);
 }
 
 .nav-links {

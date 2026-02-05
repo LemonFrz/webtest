@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
         draw() {
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+            ctx.fillStyle = 'rgba(255, 0, 110, 0.6)'; // Pink particles
             ctx.fill();
         }
     }
@@ -177,9 +177,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const distance = Math.sqrt(dx * dx + dy * dy);
 
                 if (distance < connectionDistance) {
-                    const opacity = (1 - distance / connectionDistance) * 0.3;
+                    const opacity = (1 - distance / connectionDistance) * 0.25;
                     ctx.beginPath();
-                    ctx.strokeStyle = `rgba(255, 255, 255, ${opacity})`;
+                    ctx.strokeStyle = `rgba(255, 0, 110, ${opacity})`; // Pink lines
                     ctx.lineWidth = 0.5;
                     ctx.moveTo(particles[i].x, particles[i].y);
                     ctx.lineTo(particles[j].x, particles[j].y);
@@ -196,9 +196,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const distance = Math.sqrt(dx * dx + dy * dy);
 
                 if (distance < mouse.radius) {
-                    const opacity = (1 - distance / mouse.radius) * 0.5;
+                    const opacity = (1 - distance / mouse.radius) * 0.6;
                     ctx.beginPath();
-                    ctx.strokeStyle = `rgba(255, 255, 255, ${opacity})`;
+                    ctx.strokeStyle = `rgba(255, 0, 110, ${opacity})`; // Pink cursor lines
                     ctx.lineWidth = 1;
                     ctx.moveTo(mouse.x, mouse.y);
                     ctx.lineTo(p.x, p.y);
