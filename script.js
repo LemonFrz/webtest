@@ -258,11 +258,11 @@ document.addEventListener('DOMContentLoaded', () => {
     //--------------------------------------------------------
     if (typeof VanillaTilt !== 'undefined') {
         VanillaTilt.init(document.querySelectorAll(".project-card"), {
-            max: 15,
-            speed: 400,
+            max: 8,              // Reduced from 15 - gentler tilt
+            speed: 600,          // Slightly slower
+            scale: 1.02,         // Reduced from 1.05 - subtle lift
             glare: true,
-            "max-glare": 0.3,
-            scale: 1.05
+            "max-glare": 0.15    // Reduced from 0.3 - subtle shine
         });
     }
 
