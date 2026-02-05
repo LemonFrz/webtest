@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // --------------------------------------------------------
-    // PARTICLE SYSTEM
+    // PARTICLE SYSTEM (Reverted to Floating Chaos)
     // --------------------------------------------------------
     const canvas = document.getElementById('bg-canvas');
     const ctx = canvas.getContext('2d');
@@ -49,8 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let particles = [];
 
     // Configuration
-    const particleCount = window.innerWidth < 768 ? 40 : 80; // Fewer particles on mobile
-    const connectionDistance = 100;
+    const particleCount = window.innerWidth < 768 ? 60 : 300; // Count from user's last edit
     const mouseParams = { x: null, y: null, radius: 150 };
 
     // Resize handling
@@ -110,10 +109,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     const forceDirectionX = dx / distance;
                     const forceDirectionY = dy / distance;
                     const force = (mouseParams.radius - distance) / mouseParams.radius;
-                    const directionX = forceDirectionX * force * 2; // Strength of magnetism
+                    // Original magnetism: repulsion/swirl. 
+                    // To restore original feel:
+                    const directionX = forceDirectionX * force * 2;
                     const directionY = forceDirectionY * force * 2;
 
-                    this.x += directionX;
+                    this.x += directionX; // += pushes away/around
                     this.y += directionY;
                 }
             }
@@ -130,12 +131,10 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
 
             // Dynamic Color matching the theme
-            // Implementation detail: we check the computed style of the body color
-            // This is slightly heavy, better to check class
             if (document.body.classList.contains('light-mode')) {
-                ctx.fillStyle = 'rgba(0, 0, 0, 0.1)'; // Subtle black dots in light mode
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
             } else {
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.1)'; // Subtle white dots in dark mode
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
             }
 
             ctx.fill();

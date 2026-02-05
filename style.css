@@ -245,17 +245,38 @@ nav {
 }
 
 .project-card {
-    background: var(--surface-color);
-    border: 1px solid var(--border-color);
+    background: rgba(22, 22, 22, 0.6);
+    /* Semi-transparent base */
+    backdrop-filter: blur(12px);
+    /* The "Frosted Glass" Blur */
+    -webkit-backdrop-filter: blur(12px);
+    /* Safari support */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    /* Subtle white border for glass edge */
     padding: var(--spacing-md);
-    border-radius: 8px;
+    border-radius: 16px;
+    /* High radius for iPhone feel */
     transition: var(--transition-smooth);
     cursor: pointer;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
 }
 
 .project-card:hover {
     transform: translateY(-5px);
-    border-color: var(--text-secondary);
+    border-color: rgba(255, 255, 255, 0.3);
+    /* Brighter edge on hover */
+    background: rgba(22, 22, 22, 0.8);
+}
+
+/* Light Mode Glass Adjustment */
+body.light-mode .project-card {
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+body.light-mode .project-card:hover {
+    background: rgba(255, 255, 255, 0.8);
+    border-color: rgba(0, 0, 0, 0.15);
 }
 
 .project-title {
