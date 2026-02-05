@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // TYPEWRITER ANIMATION (>//<!)
     // --------------------------------------------------------
     const typewriterElement = document.getElementById('header-typewriter');
-    const textToType = " Hola Mi Amor. . . >//<!";
+    const textToType = " Hola Mi Amigos. . . >//<!";
     let isDeleting = false;
     let charIndex = 0;
 
