@@ -17,30 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
     revealElements.forEach(element => revealObserver.observe(element));
 
     // --------------------------------------------------------
-    // THEME SWITCHING ON SCROLL
-    // --------------------------------------------------------
-    const workSection = document.getElementById('work');
-    const sections = document.querySelectorAll('section');
-
-    // We want to trigger light mode when the Work section occupies the screen
-    const themeObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                // If we scroll INTO Work (or other light sections), add light mode
-                if (entry.target.id === 'work' || entry.target.id === 'about') {
-                    document.body.classList.add('light-mode');
-                } else {
-                    document.body.classList.remove('light-mode');
-                }
-            }
-        });
-    }, { threshold: 0.3 }); // Trigger when 30% of the section is visible
-
-    // Observe all sections so passing out of Work reverts the theme
-    sections.forEach(sec => themeObserver.observe(sec));
-
-
-    // --------------------------------------------------------
     // PARTICLE SYSTEM (Reverted to Floating Chaos)
     // --------------------------------------------------------
     const canvas = document.getElementById('bg-canvas');
@@ -130,12 +106,8 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
 
-            // Dynamic Color matching the theme
-            if (document.body.classList.contains('light-mode')) {
-                ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
-            } else {
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
-            }
+            // Fixed Dark Mode Color
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
 
             ctx.fill();
         }

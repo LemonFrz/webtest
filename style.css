@@ -268,16 +268,7 @@ nav {
     background: rgba(22, 22, 22, 0.8);
 }
 
-/* Light Mode Glass Adjustment */
-body.light-mode .project-card {
-    background: rgba(255, 255, 255, 0.6);
-    border: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-body.light-mode .project-card:hover {
-    background: rgba(255, 255, 255, 0.8);
-    border-color: rgba(0, 0, 0, 0.15);
-}
+/* Light Mode Overrides Removed per user request */
 
 .project-title {
     font-size: 1.5rem;
