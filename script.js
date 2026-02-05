@@ -92,29 +92,59 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --------------------------------------------------------
-    // BACKGROUND - DISABLED (Clean dark background)
+    // VANTA.JS GLOBE BACKGROUND
     // --------------------------------------------------------
-    // No background animation - just clean dark aesthetic
-    /*
+    // PARTICLE BACKGROUND
+    // --------------------------------------------------------
     const canvas = document.getElementById('bg-canvas');
-    if (typeof VANTA !== 'undefined' && canvas) {
-        VANTA.GLOBE({
-            el: "#bg-canvas",
-            mouseControls: true,
-            touchControls: true,
-            gyroControls: false,
-            minHeight: 200.00,
-            minWidth: 200.00,
-            scale: 1.00,
-            scaleMobile: 1.00,
-            color: 0xff006e,
-            color2: 0xff006e,
-            backgroundColor: 0x0c0c0c,
-            size: 1.5,
-            backgroundAlpha: 1.0
+    const ctx = canvas.getContext('2d');
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+
+    const particles = [];
+    const particleCount = 150;
+
+    // Create particles
+    for (let i = 0; i < particleCount; i++) {
+        particles.push({
+            x: Math.random() * width,
+            y: Math.random() * height,
+            vx: (Math.random() - 0.5) * 0.3,
+            vy: (Math.random() - 0.5) * 0.3,
+            size: Math.random() * 2 + 0.5
         });
     }
-    */
+
+    // Resize handler
+    window.addEventListener('resize', () => {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+    });
+
+    // Animation loop
+    function animate() {
+        ctx.clearRect(0, 0, width, height);
+        particles.forEach(p => {
+            p.x += p.vx;
+            p.y += p.vy;
+
+            if (p.x > width) p.x = 0;
+            if (p.x < 0) p.x = width;
+            if (p.y > height) p.y = 0;
+            if (p.y < 0) p.y = height;
+
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.25)';
+            ctx.fill();
+        });
+        requestAnimationFrame(animate);
+    }
+    animate();
 
     // --------------------------------------------------------
     // CUSTOM CURSOR
