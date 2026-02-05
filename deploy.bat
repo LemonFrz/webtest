@@ -2,7 +2,7 @@
 echo Starting Deployment...
 echo --------------------------------------------
 git add .
-git commit -m "Force update - Remove light mode"
+git commit -m "Force update"
 git push
 echo --------------------------------------------
 echo Done! Your code is on GitHub.
