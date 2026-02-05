@@ -1,12 +1,22 @@
 /* Design System & Variables */
 :root {
-    --bg-color: #0c0c0c;
-    --surface-color: #161616;
-    --text-primary: #ededed;
-    --text-secondary: #a1a1a1;
+    /* Define primitive colors */
+    --color-black: #0c0c0c;
+    --color-white: #ededed;
+    --color-gray-dark: #161616;
+    --color-gray-light: #f5f5f5;
+    --color-text-dark: #a1a1a1;
+    --color-text-light: #666666;
+    --color-border-dark: #333333;
+    --color-border-light: #e5e5e5;
+
+    /* Semantic Variables (Default Dark) */
+    --bg-color: var(--color-black);
+    --surface-color: var(--color-gray-dark);
+    --text-primary: var(--color-white);
+    --text-secondary: var(--color-text-dark);
     --accent-color: #ffffff;
-    /* Stark white accent for high contrast/minimalism */
-    --border-color: #333333;
+    --border-color: var(--color-border-dark);
 
     --font-main: 'Inter', system-ui, -apple-system, sans-serif;
 
@@ -20,6 +30,17 @@
 
     --transition-fast: 0.2s ease;
     --transition-smooth: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    --transition-theme: background-color 0.8s ease, color 0.8s ease, border-color 0.8s ease;
+}
+
+/* Light Mode Overrides */
+body.light-mode {
+    --bg-color: var(--color-white);
+    --surface-color: var(--color-gray-light);
+    --text-primary: var(--color-black);
+    --text-secondary: var(--color-text-light);
+    --accent-color: #000000;
+    --border-color: var(--color-border-light);
 }
 
 /* Reset & Base */
@@ -27,6 +48,20 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    transition: var(--transition-theme);
+    /* Global theme transition */
+}
+
+/* Exclude transitions tailored for hover/transform to avoid conflict/lag */
+.project-card,
+.cta-button,
+.nav-links a::after,
+.reveal {
+    transition: var(--transition-fast);
+}
+
+.reveal {
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 body {
@@ -36,6 +71,20 @@ body {
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
+    position: relative;
+}
+
+/* Background Canvas */
+#bg-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    /* Behind everything */
+    pointer-events: none;
+    /* Let clicks pass through */
 }
 
 html {
@@ -105,7 +154,9 @@ nav {
     z-index: 100;
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(125, 125, 125, 0.1);
+    /* Subtle border for both themes */
+    transition: border-bottom-color 0.8s ease;
 }
 
 .nav-inner {
@@ -228,8 +279,9 @@ nav {
     font-size: 0.75rem;
     padding: 0.25rem 0.75rem;
     border-radius: 20px;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(125, 125, 125, 0.1);
     color: var(--text-secondary);
+    border: 1px solid rgba(125, 125, 125, 0.1);
 }
 
 /* About & Contact */
@@ -254,7 +306,7 @@ footer {
     text-align: center;
     color: var(--text-secondary);
     font-size: 0.8rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-top: 1px solid rgba(125, 125, 125, 0.1);
 }
 
 /* Animations */

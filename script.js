@@ -2,34 +2,172 @@ document.addEventListener('DOMContentLoaded', () => {
     // Dynamic Year
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Scroll Reveal Animation
+    // --------------------------------------------------------
+    // SCROLL REVEAL ANIMATION
+    // --------------------------------------------------------
     const revealElements = document.querySelectorAll('.reveal');
-
     const revealObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('active');
             }
         });
-    }, {
-        threshold: 0.1,
-        rootMargin: "0px 0px -50px 0px"
+    }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+
+    revealElements.forEach(element => revealObserver.observe(element));
+
+    // --------------------------------------------------------
+    // THEME SWITCHING ON SCROLL
+    // --------------------------------------------------------
+    const workSection = document.getElementById('work');
+    const sections = document.querySelectorAll('section');
+
+    // We want to trigger light mode when the Work section occupies the screen
+    const themeObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                // If we scroll INTO Work (or other light sections), add light mode
+                if (entry.target.id === 'work' || entry.target.id === 'about') {
+                    document.body.classList.add('light-mode');
+                } else {
+                    document.body.classList.remove('light-mode');
+                }
+            }
+        });
+    }, { threshold: 0.3 }); // Trigger when 30% of the section is visible
+
+    // Observe all sections so passing out of Work reverts the theme
+    sections.forEach(sec => themeObserver.observe(sec));
+
+
+    // --------------------------------------------------------
+    // PARTICLE SYSTEM
+    // --------------------------------------------------------
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    let particles = [];
+
+    // Configuration
+    const particleCount = window.innerWidth < 768 ? 40 : 80; // Fewer particles on mobile
+    const connectionDistance = 100;
+    const mouseParams = { x: null, y: null, radius: 150 };
+
+    // Resize handling
+    function resize() {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+    }
+    window.addEventListener('resize', () => {
+        resize();
+        initParticles(); // Re-init to avoid stretching
+    });
+    resize();
+
+    // Mouse/Touch Interaction
+    window.addEventListener('mousemove', (e) => {
+        mouseParams.x = e.x;
+        mouseParams.y = e.y;
     });
 
-    revealElements.forEach(element => {
-        revealObserver.observe(element);
+    // Touch support
+    window.addEventListener('touchmove', (e) => {
+        if (e.touches.length > 0) {
+            mouseParams.x = e.touches[0].clientX;
+            mouseParams.y = e.touches[0].clientY;
+        }
     });
 
-    // Smooth scroll for anchor links (fallback for Safari older versions if needed, 
-    // though CSS scroll-behavior usually handles this now)
+    window.addEventListener('mouseout', () => {
+        mouseParams.x = null;
+        mouseParams.y = null;
+    });
+
+    // Particle Class
+    class Particle {
+        constructor() {
+            this.x = Math.random() * width;
+            this.y = Math.random() * height;
+            this.vx = (Math.random() - 0.5) * 0.5; // Slow velocity
+            this.vy = (Math.random() - 0.5) * 0.5;
+            this.size = Math.random() * 2 + 1; // Size 1-3px
+        }
+
+        update() {
+            // Move
+            this.x += this.vx;
+            this.y += this.vy;
+
+            // Mouse Repulsion/Attraction (Magnetism)
+            if (mouseParams.x != null) {
+                let dx = mouseParams.x - this.x;
+                let dy = mouseParams.y - this.y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+
+                if (distance < mouseParams.radius) {
+                    const forceDirectionX = dx / distance;
+                    const forceDirectionY = dy / distance;
+                    const force = (mouseParams.radius - distance) / mouseParams.radius;
+                    const directionX = forceDirectionX * force * 2; // Strength of magnetism
+                    const directionY = forceDirectionY * force * 2;
+
+                    this.x += directionX;
+                    this.y += directionY;
+                }
+            }
+
+            // Boundary wrap
+            if (this.x > width) this.x = 0;
+            if (this.x < 0) this.x = width;
+            if (this.y > height) this.y = 0;
+            if (this.y < 0) this.y = height;
+        }
+
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+
+            // Dynamic Color matching the theme
+            // Implementation detail: we check the computed style of the body color
+            // This is slightly heavy, better to check class
+            if (document.body.classList.contains('light-mode')) {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.1)'; // Subtle black dots in light mode
+            } else {
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.1)'; // Subtle white dots in dark mode
+            }
+
+            ctx.fill();
+        }
+    }
+
+    function initParticles() {
+        particles = [];
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, width, height);
+        particles.forEach(p => {
+            p.update();
+            p.draw();
+        });
+        requestAnimationFrame(animate);
+    }
+
+    initParticles();
+    animate();
+
+    // Smooth scroll fix
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
             const target = document.querySelector(this.getAttribute('href'));
             if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth'
-                });
+                target.scrollIntoView({ behavior: 'smooth' });
             }
         });
     });
