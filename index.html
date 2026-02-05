@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio | Creative Developer</title>
+    <meta name="description"
+        content="Minimalistic portfolio of a creative developer specializing in building premium digital experiences.">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <nav>
+        <div class="container nav-inner">
+            <a href="#" class="logo">Lemon1g</a>
+            <div class="nav-links">
+                <a href="#work">Work</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="container hero-content">
+                <h1>What The Fuck<br>Am I Creating.</h1>
+                <p class="lead">I'm a designer & developer focused on building brands, websites, and apps with clean
+                    aesthetics and purpose. (made fully by a clanker btw)</p>
+                <a href="#work" class="cta-button">
+                    <span>View Selected Work</span>
+                    <span style="font-size: 0.7rem; opacity: 0.6; font-style: italic; font-weight: 400;">(def not my
+                        work)</span>
+                </a>
+            </div>
+        </section>
+
+        <section id="work">
+            <div class="container reveal">
+                <h2>Selected Work</h2>
+                <div class="project-grid">
+                    <!-- Project 1 -->
+                    <article class="project-card">
+                        <h3 class="project-title">Project Alpha</h3>
+                        <p class="project-desc">A fintech dashboard designed for clarity and speed. Real-time data
+                            visualization with a minimalist UI.</p>
+                        <div class="tags">
+                            <span class="tag">Design</span>
+                            <span class="tag">Development</span>
+                        </div>
+                    </article>
+
+                    <!-- Project 2 -->
+                    <article class="project-card">
+                        <h3 class="project-title">Neon Studio</h3>
+                        <p class="project-desc">Brand identity and web experience for a boutique creative agency based
+                            in Tokyo.</p>
+                        <div class="tags">
+                            <span class="tag">Branding</span>
+                            <span class="tag">Webflow</span>
+                        </div>
+                    </article>
+
+                    <!-- Project 3 -->
+                    <article class="project-card">
+                        <h3 class="project-title">Mono Type</h3>
+                        <p class="project-desc">An open-source typography tool for developers to test font pairings in
+                            real-time.</p>
+                        <div class="tags">
+                            <span class="tag">React</span>
+                            <span class="tag">Tooling</span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="about">
+            <div class="container reveal">
+                <h2>About</h2>
+                <div class="about-text">
+                    <p class="lead" style="margin-bottom: 1rem;">Less is more.</p>
+                    <p style="color: var(--text-secondary); margin-bottom: 2rem;">
+                        I believe in the power of minimalism. Good design isn't about adding things; it's about removing
+                        the unnecessary until only the essential remains.
+                        My background intersects technical engineering with visual arts, allowing me to bridge the gap
+                        between function and form.
+                    </p>
+                    <p style="color: var(--text-secondary);">
+                        Currently available for freelance projects.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact">
+            <div class="container reveal">
+                <h2>Let's Talk</h2>
+                <div class="contact-text">
+                    <p class="lead">Interested in working together? Get in touch.</p>
+                    <div class="social-links">
+                        <a href="mailto:hello@example.com">Email ↗</a>
+                        <a href="#">Twitter ↗</a>
+                        <a href="#">LinkedIn ↗</a>
+                        <a href="#">GitHub ↗</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; <span id="year"></span> Portfolio. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
