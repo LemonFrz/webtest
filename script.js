@@ -195,7 +195,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Set Content
             modalTitle.innerText = title;
-            modalDesc.innerText = desc + " (Full case study content would go here. You can add more text, images, or even embed a video in this modal!)";
+            modalDesc.innerText = desc;
             modalTags.innerHTML = tags;
 
             // Set Image
