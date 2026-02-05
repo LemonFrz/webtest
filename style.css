@@ -311,7 +311,8 @@ nav {
     /* The "Frosted Glass" Blur */
     -webkit-backdrop-filter: blur(12px);
     /* Safari support */
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 0, 110, 0.25);
+    /* Pink wireframe */
     /* Subtle white border for glass edge */
     padding: var(--spacing-md);
     border-radius: 16px;
@@ -323,11 +324,11 @@ nav {
 
 .project-card:hover {
     transform: translateY(-5px);
-    border-color: rgba(255, 255, 255, 0.3);
-    /* Brighter edge on hover */
+    border-color: rgba(255, 0, 110, 0.6);
+    /* Brighter pink on hover */
+    box-shadow: 0 0 20px rgba(255, 0, 110, 0.2);
+    /* Pink glow */
     background: rgba(22, 22, 22, 0.8);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5),
-        0 0 30px rgba(255, 255, 255, 0.1);
 }
 
 .project-title {
