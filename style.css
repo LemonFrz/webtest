@@ -221,8 +221,8 @@ nav {
 }
 
 .lemon-icon {
-    color: #FFD700;
-    /* Lemon yellow/gold */
+    font-size: 1.4rem;
+    line-height: 1;
     flex-shrink: 0;
     transition: transform 0.3s ease;
 }
