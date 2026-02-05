@@ -103,8 +103,7 @@
 }
 
 body {
-    background-color: transparent;
-    /* TESTING - was: var(--bg-color) */
+    background-color: var(--bg-color);
     color: var(--text-primary);
     font-family: var(--font-main);
     line-height: 1.6;
