@@ -3,7 +3,7 @@ echo Starting Deployment...
 echo --------------------------------------------
 git add .
 git commit -m "Force update"
-git push
+git push -f
 echo --------------------------------------------
 echo Done! Your code is on GitHub.
 echo.
