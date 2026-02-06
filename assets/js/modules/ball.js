@@ -59,6 +59,48 @@ function initBall() {
             velocityY *= 1.5;
         }
     });
+    // Touch drag (Mobile)
+    ball.addEventListener('touchstart', (e) => {
+        e.preventDefault(); // Stop scrolling/selection
+        const touch = e.touches[0];
+        isDragging = true;
+        hasInteracted = true;
+        document.body.classList.add('no-select');
+        dragStartX = touch.clientX - ballX;
+        dragStartY = touch.clientY - ballY;
+        lastX = touch.clientX;
+        lastY = touch.clientY;
+        velocityX = 0;
+        velocityY = 0;
+    }, { passive: false });
+
+    // Global touch events for dragging outside the ball
+    document.addEventListener('touchmove', (e) => {
+        if (isDragging) {
+            e.preventDefault(); // Stop scrolling while dragging
+            const touch = e.touches[0];
+            const newX = touch.clientX - dragStartX;
+            const newY = touch.clientY - dragStartY;
+
+            // Calculate velocity from movement
+            velocityX = (newX - ballX) * 0.8;
+            velocityY = (newY - ballY) * 0.8;
+
+            ballX = newX;
+            ballY = newY;
+            lastX = touch.clientX;
+            lastY = touch.clientY;
+        }
+    }, { passive: false });
+
+    document.addEventListener('touchend', (e) => {
+        if (isDragging) {
+            isDragging = false;
+            document.body.classList.remove('no-select');
+            velocityX *= 1.5;
+            velocityY *= 1.5;
+        }
+    });
 
     // Physics
     function updateBall() {
