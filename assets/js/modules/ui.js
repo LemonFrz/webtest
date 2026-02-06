@@ -12,6 +12,7 @@ function initUI() {
     initModals();
     initSmoothScroll();
     initTilt();
+    initChaos();
 }
 
 function initTypewriter() {
@@ -137,4 +138,60 @@ function initTilt() {
             "max-glare": 0.15
         });
     }
+}
+
+function initChaos() {
+    const chaosBtn = document.getElementById('chaos-btn');
+    if (!chaosBtn) return;
+
+    let isChaos = false;
+    let isFixing = false;
+
+    chaosBtn.addEventListener('click', () => {
+        if (isFixing) return; // Prevent clicking during fix animation
+
+        isChaos = !isChaos;
+
+        if (isChaos) {
+            document.body.classList.add('chaos-mode');
+            chaosBtn.textContent = '🔧 Fix it!';
+            chaosBtn.style.background = 'radial-gradient(circle at 30% 30%, #00ff00, #00cc00)';
+
+            // Screen shake effect - animate main content, not body
+            const hero = document.querySelector('.hero');
+            if (hero) {
+                let shakeCount = 0;
+                const shakeInterval = setInterval(() => {
+                    hero.style.transform = `translate(${Math.random() * 10 - 5}px, ${Math.random() * 10 - 5}px)`;
+                    shakeCount++;
+                    if (shakeCount > 15) {
+                        clearInterval(shakeInterval);
+                        hero.style.transform = 'translate(0, 0)';
+                    }
+                }, 50);
+            }
+
+        } else {
+            // Start fixing animation
+            isFixing = true;
+            document.body.classList.remove('chaos-mode');
+            document.body.classList.add('fixing-mode');
+            chaosBtn.textContent = '⚙️ Fixing...';
+            chaosBtn.style.background = 'radial-gradient(circle at 30% 30%, #ff9500, #ff6b00)';
+            chaosBtn.style.pointerEvents = 'none'; // Disable during animation
+
+            // Visual repair effect - sparkle flash
+            document.body.style.animation = 'flash 0.3s ease-out';
+
+            // After animation completes, restore normal state
+            setTimeout(() => {
+                document.body.classList.remove('fixing-mode');
+                document.body.style.animation = '';
+                chaosBtn.textContent = 'Click Me!';
+                chaosBtn.style.background = 'radial-gradient(circle at 30% 30%, #ff1744, #ff006e)';
+                chaosBtn.style.pointerEvents = 'auto';
+                isFixing = false;
+            }, 1500);
+        }
+    });
 }
