@@ -132,6 +132,54 @@ body::before {
     /* Let clicks pass through */
 }
 
+/* Scroll Progress Bar */
+#scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 3px;
+    background: linear-gradient(90deg, #ff006e, #ff1744, #ff006e);
+    background-size: 200% 100%;
+    animation: gradientShift 3s ease infinite;
+    z-index: 10000;
+    transition: width 0.1s ease-out;
+}
+
+@keyframes gradientShift {
+
+    0%,
+    100% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+/* Interactive Bouncing Ball */
+#bouncing-ball {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #ff1744, #ff006e);
+    box-shadow: 0 0 20px rgba(255, 0, 110, 0.6),
+        0 0 40px rgba(255, 0, 110, 0.3),
+        inset -5px -5px 15px rgba(0, 0, 0, 0.3),
+        inset 5px 5px 10px rgba(255, 255, 255, 0.2);
+    cursor: grab;
+    z-index: 9999;
+    transition: box-shadow 0.2s ease;
+}
+
+#bouncing-ball:active {
+    cursor: grabbing;
+    box-shadow: 0 0 30px rgba(255, 0, 110, 0.8),
+        0 0 50px rgba(255, 0, 110, 0.5);
+}
+
 html {
     scroll-behavior: smooth;
     background: white;
