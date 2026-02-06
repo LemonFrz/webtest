@@ -214,7 +214,13 @@
         </div>
     </div>
 
-    <script src="assets/js/script.js"></script>
+    <!-- Load Modules sequentially (Order matters) -->
+    <script src="assets/js/modules/cursor.js"></script>
+    <script src="assets/js/modules/particles.js"></script>
+    <script src="assets/js/modules/ball.js"></script>
+    <script src="assets/js/modules/ui.js"></script>
+    <!-- Main Entry Point -->
+    <script src="assets/js/main.js"></script>
 </body>
 
 </html>
