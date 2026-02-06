@@ -74,10 +74,7 @@
     font-size: 4rem;
     font-weight: 900;
     margin: 0;
-    background: linear-gradient(135deg, #ffffff, #ff006e);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: #ffffff;
 }
 
 .project-tagline {
