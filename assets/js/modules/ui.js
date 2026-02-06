@@ -9,7 +9,6 @@ function initUI() {
 
     initTypewriter();
     initScrollProgress();
-    initModals();
     initSmoothScroll();
     initTilt();
     initChaos();
@@ -61,59 +60,6 @@ function initScrollProgress() {
         const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
         const scrollPercentage = (scrollTop / scrollHeight) * 100;
         progressBar.style.width = scrollPercentage + '%';
-    });
-}
-
-function initModals() {
-    const modal = document.getElementById('project-modal');
-    if (!modal) return;
-
-    const modalClose = document.querySelectorAll('.modal-close');
-    const projectCards = document.querySelectorAll('.project-card');
-    const modalTitle = document.getElementById('modal-title');
-    const modalDesc = document.getElementById('modal-desc');
-    const modalTags = document.getElementById('modal-tags');
-    const visualPlaceholder = document.querySelector('.modal-visual-placeholder');
-
-    projectCards.forEach(card => {
-        card.addEventListener('click', () => {
-            const title = card.querySelector('.project-title').innerText;
-            const desc = card.querySelector('.project-desc').innerText;
-            const tags = card.querySelector('.tags').innerHTML;
-            const imgPath = card.getAttribute('data-image');
-
-            modalTitle.innerText = title;
-            modalDesc.innerText = desc;
-            modalTags.innerHTML = tags;
-
-            if (imgPath && visualPlaceholder) {
-                visualPlaceholder.innerHTML = `<img src="${imgPath}" alt="${title}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px; display: block;">`;
-                visualPlaceholder.style.border = 'none';
-            } else if (visualPlaceholder) {
-                visualPlaceholder.innerHTML = `<span>Project Preview / Video Area</span>`;
-                visualPlaceholder.style.border = '1px dashed rgba(255,255,255,0.1)';
-            }
-
-            modal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        });
-    });
-
-    function closeModal() {
-        modal.classList.remove('active');
-        document.body.style.overflow = '';
-    }
-
-    modalClose.forEach(btn => btn.addEventListener('click', closeModal));
-
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) closeModal();
-    });
-
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && modal.classList.contains('active')) {
-            closeModal();
-        }
     });
 }
 
@@ -187,7 +133,7 @@ function initChaos() {
             setTimeout(() => {
                 document.body.classList.remove('fixing-mode');
                 document.body.style.animation = '';
-                chaosBtn.textContent = 'Click Me!';
+                chaosBtn.innerHTML = 'CHAOS<br>MODE';
                 chaosBtn.style.background = 'radial-gradient(circle at 30% 30%, #ff1744, #ff006e)';
                 chaosBtn.style.pointerEvents = 'auto';
                 isFixing = false;
