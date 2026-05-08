@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liquid Glass — Lemon1g</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; cursor: none !important; }
+
+        :root {
+            --glass-bg: rgba(255,255,255,0.12);
+            --glass-border: rgba(255,255,255,0.25);
+            --glass-shadow: rgba(0,0,0,0.25);
+            --glass-highlight: rgba(255,255,255,0.45);
+            --blur: 28px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background: #060612;
+            color: #fff;
+        }
+
+        /* ── Custom Cursor ── */
+        .cursor-dot {
+            position: fixed; top: 0; left: 0; width: 8px; height: 8px;
+            background: #fff; border-radius: 50%; pointer-events: none;
+            z-index: 99999; transition: transform 0.08s ease, opacity 0.3s;
+        }
+        .cursor-ring {
+            position: fixed; top: 0; left: 0; width: 36px; height: 36px;
+            border: 1.5px solid rgba(255,255,255,0.6); border-radius: 50%;
+            pointer-events: none; z-index: 99998;
+            transition: transform 0.18s ease, width 0.3s, height 0.3s, opacity 0.3s;
+        }
+        .cursor-ring.expand { width: 56px; height: 56px; border-color: rgba(255,255,255,0.9); }
+
+        /* ── Animated Gradient BG ── */
+        .bg-gradient {
+            position: fixed; inset: 0; z-index: 0;
+            background: radial-gradient(ellipse 80% 60% at 20% 30%, #6a3de8 0%, transparent 60%),
+                        radial-gradient(ellipse 70% 50% at 80% 70%, #e8423d 0%, transparent 55%),
+                        radial-gradient(ellipse 60% 50% at 50% 20%, #1e90e8 0%, transparent 50%),
+                        radial-gradient(ellipse 90% 80% at 10% 80%, #e84394 0%, transparent 60%),
+                        #060612;
+            animation: bgShift 12s ease-in-out infinite alternate;
+        }
+        @keyframes bgShift {
+            0%   { filter: hue-rotate(0deg) brightness(1); }
+            50%  { filter: hue-rotate(30deg) brightness(1.15); }
+            100% { filter: hue-rotate(-20deg) brightness(0.95); }
+        }
+
+        /* Floating orbs */
+        .orb {
+            position: fixed; border-radius: 50%; filter: blur(60px);
+            pointer-events: none; z-index: 0; animation: orbFloat 20s ease-in-out infinite;
+        }
+        .orb-1 { width:500px; height:500px; background:rgba(106,61,232,0.35); top:-100px; left:-100px; animation-duration:18s; }
+        .orb-2 { width:400px; height:400px; background:rgba(232,66,61,0.3);  bottom:-80px; right:-80px; animation-duration:22s; animation-delay:-5s; }
+        .orb-3 { width:300px; height:300px; background:rgba(30,144,232,0.25); top:40%; left:40%; animation-duration:15s; animation-delay:-8s; }
+        @keyframes orbFloat {
+            0%,100% { transform: translate(0,0) scale(1); }
+            33%  { transform: translate(40px,-60px) scale(1.05); }
+            66%  { transform: translate(-30px,40px) scale(0.95); }
+        }
+
+        /* ── Layout ── */
+        .page { position: relative; z-index: 1; }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
+
+        /* ── Liquid Glass Mixin ── */
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(var(--blur)) saturate(180%);
+            -webkit-backdrop-filter: blur(var(--blur)) saturate(180%);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            box-shadow:
+                0 2px 0 0 var(--glass-highlight) inset,
+                0 -1px 0 0 rgba(0,0,0,0.15) inset,
+                0 20px 60px var(--glass-shadow),
+                0 1px 1px rgba(255,255,255,0.08) inset;
+            position: relative;
+            overflow: hidden;
+        }
+        /* top sheen */
+        .glass::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0; height: 50%;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.12), transparent);
+            border-radius: inherit; pointer-events: none; z-index: 0;
+        }
+        .glass > * { position: relative; z-index: 1; }
+
+        /* ── Header ── */
+        header {
+            position: fixed; top: 16px; left: 50%; transform: translateX(-50%);
+            width: calc(100% - 3rem); max-width: 1100px; z-index: 1000;
+        }
+        .nav-glass {
+            background: rgba(255,255,255,0.10);
+            backdrop-filter: blur(40px) saturate(200%);
+            -webkit-backdrop-filter: blur(40px) saturate(200%);
+            border: 1px solid rgba(255,255,255,0.22);
+            border-radius: 100px;
+            padding: 0.85rem 2rem;
+            display: flex; align-items: center; justify-content: space-between;
+            box-shadow: 0 2px 0 rgba(255,255,255,0.3) inset, 0 8px 32px rgba(0,0,0,0.3);
+        }
+        .nav-logo {
+            font-size: 1.2rem; font-weight: 700; color: #fff;
+            text-decoration: none; letter-spacing: -0.02em;
+        }
+        .nav-links { display: flex; gap: 0.25rem; }
+        .nav-links a {
+            color: rgba(255,255,255,0.8); text-decoration: none;
+            font-size: 0.9rem; font-weight: 500;
+            padding: 0.5rem 1.1rem; border-radius: 100px;
+            transition: all 0.3s;
+        }
+        .nav-links a:hover {
+            background: rgba(255,255,255,0.15);
+            color: #fff;
+        }
+        .nav-links a.active {
+            background: rgba(255,255,255,0.18);
+            color: #fff;
+        }
+
+        /* ── Hero ── */
+        .hero {
+            min-height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+            text-align: center; padding: 120px 2rem 4rem;
+        }
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 100px;
+            padding: 0.4rem 1rem;
+            font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em;
+            text-transform: uppercase; color: rgba(255,255,255,0.8);
+            margin-bottom: 2rem;
+        }
+        .hero-badge span { width:6px; height:6px; background:#4ade80; border-radius:50%; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%,100%{opacity:1; transform:scale(1);} 50%{opacity:0.5; transform:scale(1.5);} }
+
+        .hero h1 {
+            font-size: clamp(3.5rem, 9vw, 7.5rem);
+            font-weight: 900; line-height: 1.0;
+            letter-spacing: -0.04em;
+            background: linear-gradient(135deg, #ffffff 0%, rgba(255,255,255,0.6) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1.5rem;
+        }
+        .hero-sub {
+            font-size: 1.25rem; color: rgba(255,255,255,0.55);
+            font-weight: 400; max-width: 540px; margin: 0 auto 3rem;
+            line-height: 1.6;
+        }
+        .hero-ctas { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+        .btn-glass {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.9rem 2rem; border-radius: 100px;
+            font-size: 1rem; font-weight: 600; text-decoration: none;
+            transition: all 0.35s cubic-bezier(0.16,1,0.3,1);
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.22);
+            color: #fff;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 2px 0 rgba(255,255,255,0.25) inset, 0 8px 24px rgba(0,0,0,0.25);
+        }
+        .btn-glass:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 2px 0 rgba(255,255,255,0.3) inset, 0 16px 40px rgba(0,0,0,0.3);
+        }
+        .btn-glass.primary {
+            background: rgba(255,255,255,0.92);
+            color: #1a1a2e;
+            border-color: transparent;
+        }
+        .btn-glass.primary:hover { background: #fff; }
+
+        /* ── Cards Grid ── */
+        .section { padding: 6rem 0; }
+        .section-label {
+            font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em;
+            text-transform: uppercase; color: rgba(255,255,255,0.45);
+            margin-bottom: 1rem;
+        }
+        .section-title {
+            font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 800;
+            letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 4rem;
+            background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.65) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .cards-grid {
+            display: grid; grid-template-columns: repeat(12, 1fr);
+            gap: 1.25rem;
+        }
+        .card {
+            padding: 2.5rem 2rem;
+            transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s;
+        }
+        .card:hover {
+            transform: translateY(-8px) scale(1.01);
+            box-shadow: 0 2px 0 rgba(255,255,255,0.3) inset, 0 32px 80px rgba(0,0,0,0.4);
+        }
+        .card-span-8 { grid-column: span 8; }
+        .card-span-4 { grid-column: span 4; }
+        .card-span-6 { grid-column: span 6; }
+        .card-span-12 { grid-column: span 12; }
+
+        .card-icon { font-size: 3rem; margin-bottom: 1.5rem; }
+        .card-title {
+            font-size: 1.6rem; font-weight: 700; letter-spacing: -0.02em;
+            color: #fff; margin-bottom: 0.75rem;
+        }
+        .card-desc { font-size: 1rem; color: rgba(255,255,255,0.55); line-height: 1.6; }
+
+        .card-tag {
+            display: inline-block;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 100px; padding: 0.3rem 0.8rem;
+            font-size: 0.78rem; font-weight: 600; color: rgba(255,255,255,0.7);
+            margin-top: 1.5rem; margin-right: 0.4rem;
+        }
+
+        /* big feature card */
+        .card-feature {
+            background: linear-gradient(135deg, rgba(106,61,232,0.25) 0%, rgba(255,255,255,0.06) 100%);
+        }
+        .card-feature-2 {
+            background: linear-gradient(135deg, rgba(30,144,232,0.2) 0%, rgba(255,255,255,0.06) 100%);
+        }
+        .card-feature-3 {
+            background: linear-gradient(135deg, rgba(232,67,148,0.2) 0%, rgba(255,255,255,0.06) 100%);
+        }
+
+        /* Stat card */
+        .stat-num {
+            font-size: 4rem; font-weight: 900; letter-spacing: -0.04em;
+            background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.5) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .stat-label { font-size: 0.95rem; color: rgba(255,255,255,0.5); margin-top: 0.5rem; }
+
+        /* ── Showcase strip ── */
+        .showcase {
+            margin: 0 -1.25rem; padding: 3rem 3rem;
+            background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%);
+            border-radius: 28px;
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(40px);
+            display: flex; align-items: center; gap: 4rem; flex-wrap: wrap;
+        }
+        .showcase-text { flex: 1; min-width: 280px; }
+        .showcase-text h2 { font-size: 2.5rem; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 1rem; }
+        .showcase-text p { color: rgba(255,255,255,0.55); line-height: 1.7; }
+        .showcase-visual {
+            flex: 1; min-width: 280px; height: 280px;
+            background: linear-gradient(135deg, rgba(106,61,232,0.4), rgba(30,144,232,0.4));
+            border-radius: 20px; border: 1px solid rgba(255,255,255,0.15);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 5rem;
+        }
+
+        /* ── CTA Section ── */
+        .cta-section {
+            padding: 5rem 3rem; text-align: center;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 28px;
+            backdrop-filter: blur(40px);
+            margin-bottom: 6rem;
+        }
+        .cta-section h2 { font-size: 3rem; font-weight: 900; letter-spacing: -0.03em; margin-bottom: 1rem; }
+        .cta-section p { color: rgba(255,255,255,0.55); font-size: 1.1rem; margin-bottom: 2.5rem; }
+
+        /* ── Footer ── */
+        footer {
+            border-top: 1px solid rgba(255,255,255,0.08);
+            padding: 3rem 0;
+            text-align: center;
+            color: rgba(255,255,255,0.3);
+            font-size: 0.9rem;
+        }
+        footer a { color: rgba(255,255,255,0.5); text-decoration: none; transition: color 0.3s; }
+        footer a:hover { color: #fff; }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .card-span-8, .card-span-4, .card-span-6 { grid-column: span 12; }
+            header { top: 10px; width: calc(100% - 2rem); }
+            .nav-links { display: none; }
+            .showcase { flex-direction: column; }
+        }
+
+        /* ── Scroll reveal ── */
+        .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body>
+
+<!-- Custom Cursor -->
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- Background -->
+<div class="bg-gradient"></div>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
+<div class="page">
+
+    <!-- Header -->
+    <header>
+        <nav class="nav-glass">
+            <a href="index.html" class="nav-logo">🍋 Lemon1g</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="index.html#work">Work</a>
+                <a href="index.html#contact">Contact</a>
+                <a href="liquid-glass.html" class="active">Special ✦</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div>
+            <div class="hero-badge"><span></span> Liquid Glass — iOS 26</div>
+            <h1>Design<br>That Flows.</h1>
+            <p class="hero-sub">Apple's new Liquid Glass design language, reimagined. Translucent, fluid, alive.</p>
+            <div class="hero-ctas">
+                <a href="index.html#work" class="btn-glass primary">View My Work</a>
+                <a href="index.html#contact" class="btn-glass">Get In Touch</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="section">
+        <div class="container">
+            <p class="section-label reveal">What I Do</p>
+            <h2 class="section-title reveal">Crafted with<br>purpose.</h2>
+
+            <div class="cards-grid">
+                <!-- Big card -->
+                <div class="card glass card-feature card-span-8 reveal">
+                    <div class="card-icon">🎨</div>
+                    <h3 class="card-title">Character Design</h3>
+                    <p class="card-desc">Creating expressive, personality-filled characters that tell a story at a glance. From sassy cats to nerdy felines — every design has soul.</p>
+                    <span class="card-tag">Illustration</span>
+                    <span class="card-tag">Photoshop</span>
+                    <span class="card-tag">Digital Art</span>
+                </div>
+
+                <!-- Stat card -->
+                <div class="card glass card-span-4 reveal" style="display:flex;flex-direction:column;justify-content:space-between;">
+                    <div>
+                        <div class="stat-num">3+</div>
+                        <div class="stat-label">Projects shipped</div>
+                    </div>
+                    <div style="margin-top:2rem;">
+                        <div class="stat-num" style="font-size:2.5rem;">100%</div>
+                        <div class="stat-label">Cat content</div>
+                    </div>
+                </div>
+
+                <!-- Two equal cards -->
+                <div class="card glass card-feature-2 card-span-6 reveal">
+                    <div class="card-icon">⚡</div>
+                    <h3 class="card-title">Fast Iteration</h3>
+                    <p class="card-desc">Quick turnarounds without sacrificing quality. Ideas go from concept to finished piece at speed.</p>
+                    <span class="card-tag">Rapid Design</span>
+                </div>
+
+                <div class="card glass card-feature-3 card-span-6 reveal">
+                    <div class="card-icon">🐱</div>
+                    <h3 class="card-title">Cat Specialist</h3>
+                    <p class="card-desc">Unofficial world expert in rendering cats with maximum personality and minimum dignity.</p>
+                    <span class="card-tag">Cats</span>
+                    <span class="card-tag">Vibes</span>
+                </div>
+
+                <!-- Wide card -->
+                <div class="card glass card-span-12 reveal" style="display:flex;align-items:center;gap:3rem;flex-wrap:wrap;">
+                    <div style="flex:1;min-width:200px;">
+                        <div class="card-icon">🛠️</div>
+                        <h3 class="card-title">Tools of the Trade</h3>
+                    </div>
+                    <div style="flex:2;min-width:260px;display:flex;gap:1rem;flex-wrap:wrap;">
+                        <div style="text-align:center;padding:1.5rem;background:rgba(255,255,255,0.06);border-radius:16px;border:1px solid rgba(255,255,255,0.1);min-width:100px;">
+                            <div style="font-size:2rem;">🖌️</div>
+                            <div style="font-size:0.85rem;color:rgba(255,255,255,0.6);margin-top:0.5rem;">Photoshop</div>
+                        </div>
+                        <div style="text-align:center;padding:1.5rem;background:rgba(255,255,255,0.06);border-radius:16px;border:1px solid rgba(255,255,255,0.1);min-width:100px;">
+                            <div style="font-size:2rem;">🎭</div>
+                            <div style="font-size:0.85rem;color:rgba(255,255,255,0.6);margin-top:0.5rem;">Illustrator</div>
+                        </div>
+                        <div style="text-align:center;padding:1.5rem;background:rgba(255,255,255,0.06);border-radius:16px;border:1px solid rgba(255,255,255,0.1);min-width:100px;">
+                            <div style="font-size:2rem;">💻</div>
+                            <div style="font-size:0.85rem;color:rgba(255,255,255,0.6);margin-top:0.5rem;">Web</div>
+                        </div>
+                        <div style="text-align:center;padding:1.5rem;background:rgba(255,255,255,0.06);border-radius:16px;border:1px solid rgba(255,255,255,0.1);min-width:100px;">
+                            <div style="font-size:2rem;">✨</div>
+                            <div style="font-size:0.85rem;color:rgba(255,255,255,0.6);margin-top:0.5rem;">Vibes</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Showcase -->
+    <section class="section" style="padding-top:0;">
+        <div class="container">
+            <div class="showcase reveal">
+                <div class="showcase-text">
+                    <p class="section-label">Featured Work</p>
+                    <h2>FYOUCAT.<br>Self Explanatory.</h2>
+                    <p style="color:rgba(255,255,255,0.55);margin-top:1rem;line-height:1.7;">The iconic middle-finger cat. Bold, unapologetic, and impossibly relatable. A statement piece for the internet age.</p>
+                    <a href="projects/fyoucat.html" class="btn-glass" style="margin-top:2rem;display:inline-flex;">View Project →</a>
+                </div>
+                <div class="showcase-visual">🐱</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section" style="padding-top:0;">
+        <div class="container">
+            <div class="cta-section reveal">
+                <h2>Let's make something.</h2>
+                <p>Got a project? An idea? A meme that needs to be designed?<br>Let's talk about it.</p>
+                <a href="index.html#contact" class="btn-glass primary">Say Hello 👋</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>© <span id="yr"></span> Lemon1g &nbsp;·&nbsp; <a href="index.html">← Back to Portfolio</a></p>
+        </div>
+    </footer>
+</div>
+
+<script>
+    // Year
+    document.getElementById('yr').textContent = new Date().getFullYear();
+
+    // Custom cursor
+    const dot = document.getElementById('cursorDot');
+    const ring = document.getElementById('cursorRing');
+    document.addEventListener('mousemove', e => {
+        dot.style.transform  = `translate(${e.clientX - 4}px, ${e.clientY - 4}px)`;
+        ring.style.transform = `translate(${e.clientX - 18}px, ${e.clientY - 18}px)`;
+    });
+    document.querySelectorAll('a, button').forEach(el => {
+        el.addEventListener('mouseenter', () => ring.classList.add('expand'));
+        el.addEventListener('mouseleave', () => ring.classList.remove('expand'));
+    });
+    document.addEventListener('mouseleave', () => { dot.style.opacity='0'; ring.style.opacity='0'; });
+    document.addEventListener('mouseenter', () => { dot.style.opacity='1'; ring.style.opacity='1'; });
+
+    // Scroll reveal
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+        a.addEventListener('click', e => {
+            const t = document.querySelector(a.getAttribute('href'));
+            if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
+        });
+    });
+</script>
+</body>
+</html>
